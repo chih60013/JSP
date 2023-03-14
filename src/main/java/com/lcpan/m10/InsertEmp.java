@@ -61,9 +61,11 @@ public class InsertEmp extends HttpServlet {
 			emp.setEname(ename);
 			emp.setHiredate(hiredate);
 			emp.setSalary(salary);
+			emp.setDeptno(deptno);
 			emp.setTitle(title);
 			
-			request.setAttribute("emp", emp);
+			
+			request.setAttribute("emp", emp); 
 		psmt.close();
 		request.getRequestDispatcher("/m10/GetEmp.jsp")
 			.forward(request, response);
