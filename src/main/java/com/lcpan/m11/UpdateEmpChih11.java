@@ -16,8 +16,8 @@ import javax.sql.DataSource;
 
 import com.lcpan.bean.EmpBean;
 
-@WebServlet("/UpdateEmpChih")
-public class UpdateEmpChih extends HttpServlet {
+@WebServlet("/UpdateEmpChih11")
+public class UpdateEmpChih11 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
@@ -31,13 +31,13 @@ public class UpdateEmpChih extends HttpServlet {
 		String title = request.getParameter("title");
 		String message = "" ; // 先設定一空值，未來用
 		
-		String sql = " insert into  [jdbc].[dbo].[employee] values (?,?,?,?,?,?) ";   //sql 新增資料庫語法。
+		String sql = " UPDATE employee SET ename=?, hiredate=?, salary=?, deptno=?, title=? WHERE empno=?";   //sql 新增資料庫語法。
 		
 	
 		try {
 			Context context = new InitialContext();
 			DataSource ds = (DataSource)context.lookup("java:/comp/env/jdbc/servdb");
-			conn =ds.getConnection();  //透過JNDI物件 去做 連線   這邊是在 XML檔內做修改，修改一次即可永久使用 不須再向JDBC一樣 寫連接詞彙等。
+			Connection conn =ds.getConnection();  //透過JNDI物件 去做 連線   這邊是在 XML檔內做修改，修改一次即可永久使用 不須再向JDBC一樣 寫連接詞彙等。
 			PreparedStatement psmt = conn.prepareStatement(sql);  //這邊則是透過 psmt(欲處理程序) 去做連接 準備開始執行 sql 語句，而sql語句則是透過上面sql語法來執行
 			psmt.setString(1, empno);  // 因 員工資料表中 有六個欄位 ， 這邊開始將值填入  第一個問號中，且第一個問號代表為 empno    
 			psmt.setString(2, ename); //以此類推  共計六個問號 還有六個值。
@@ -64,19 +64,11 @@ public class UpdateEmpChih extends HttpServlet {
 				//這個方法接受兩個參數，第一個參數是一個字串，表示要存儲的資料的名稱或鍵（key），第二個參數是要存儲的資料本身。
 				//存儲後的資料可以在同一個 HTTP 請求中的其他 Servlet 中訪問，也可以通過請求轉發（RequestDispatcher）或重定向（Redirect）在不同的請求中訪問。
 				
-				
+				psmt.close();
+				request.getRequestDispatcher("/m10/UpdateEmpChih.jsp").forward(request, response);
 				
 				
 			}
-//			else {
-//				message = "新增失敗，請重新確認輸入資訊。";
-//			}
-			
-			
-			request.getRequestDispatcher("/m11/UpdateEmpChih.jsp")  
-				.forward(request, response);   //指派m10/GetEmp.jsp檔案來當 servlet 執行 request 跟 response
-			psmt.close();  //有執行 必然要關閉 節省程式資源
-			
 			
 		
 	}catch (Exception e) {

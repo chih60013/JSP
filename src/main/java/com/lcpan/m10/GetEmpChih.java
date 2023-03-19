@@ -18,22 +18,18 @@ import com.lcpan.bean.EmpBean;
 /**
  * Servlet implementation class GetEmp
  */
-@WebServlet("/GetEmp")
-public class GetEmp extends HttpServlet {
+@WebServlet("/GetEmpChih")
+public class GetEmpChih extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
   
-    public GetEmp() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 			  
 	 Connection conn;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String empno = request.getParameter("empno");
+		String empno = request.getParameter("empno"); //來自前面html 所帶的empno屬性值  name是 empno 。
 					   
  String jdbcDriver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
  String user = "chief";
@@ -47,10 +43,10 @@ public class GetEmp extends HttpServlet {
 			PreparedStatement  psmt = conn.prepareStatement(sql);
 			
 			    
-			psmt.setString(1, empno);
-			ResultSet rs = psmt.executeQuery();
-			EmpBean emp = new EmpBean();
-			if(rs.next()) {
+			psmt.setString(1, empno);  //empno設進 sql指令。 set進去
+			ResultSet rs = psmt.executeQuery(); //執行得到result 。 result就是結果集
+			EmpBean emp = new EmpBean();  
+			if(rs.next()) {   //欄位名稱為0  所以要next
 				emp.setEmpno(rs.getString("empno"));
 				emp.setEname(rs.getString("ename"));
 				emp.setHiredate(rs.getString("hiredate"));
@@ -58,9 +54,9 @@ public class GetEmp extends HttpServlet {
 				emp.setDeptno(rs.getString("deptno"));
 				emp.setTitle(rs.getString("title"));
 			}
-			request.setAttribute("emp", emp);
+			request.setAttribute("emp", emp); //有資料的emp  名稱也命名為emp  emp.bean
 			psmt.close();
-			request.getRequestDispatcher("/m10/GetEmp.jsp")
+			request.getRequestDispatcher("/m10/UpdateEmpChih.jsp")  //帶著emp 進入下一隻jsp
 				.forward(request, response);
 		}catch (ClassNotFoundException | SQLException e) {
 		    e.printStackTrace();
